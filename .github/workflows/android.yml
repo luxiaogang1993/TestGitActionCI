@@ -32,7 +32,7 @@ jobs:
       
     - name: 对emojitags模块进行打包操作
 #       run: ./gradlew emojiTags:bundleRelease
-      run: ./gradlew emojiTags:assembleRelease
+      run: ./gradlew app:assembleRelease
       
 #     - name: 对asset加密进行文件还原
 #       run: ./gradlew emojiTags:assetsReset -Pbundleid=toptags.coolbios.caption
