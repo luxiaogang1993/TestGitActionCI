@@ -1,0 +1,44 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew build
+
+#     - name: 生成哪些dict文件
+#       run: ./gradlew emojiTags:genDict
+      
+#     - name: 进行asset加密
+#       run: ./gradlew emojiTags:assetsEncode -Pbundleid=toptags.coolbios.caption
+      
+    - name: 对emojitags模块进行打包操作
+#       run: ./gradlew emojiTags:bundleRelease
+      run: ./gradlew emojiTags:assembleRelease
+      
+#     - name: 对asset加密进行文件还原
+#       run: ./gradlew emojiTags:assetsReset -Pbundleid=toptags.coolbios.caption
+        
+    - uses: actions/upload-artifact@v2
+      name: upload build output
+      with:
+       name: gitaction-artifact
+       path: ${{ github.workspace }}/app/build/outputs/bundle/release
